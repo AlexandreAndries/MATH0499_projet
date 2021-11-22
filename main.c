@@ -5,9 +5,11 @@
  * @projet: MATH0499
  */
 
+ #include "graphe.c"
+
 
  int main(int argc, char const *argv[]) {
 
-   
+
    return 0;
  }
