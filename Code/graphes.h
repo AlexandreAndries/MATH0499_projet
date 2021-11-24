@@ -4,31 +4,27 @@
 
 #define MAX 10000
 
-struct eltadj {
+typedef struct eltadj {
 	int dest;
 	int info;
 	struct eltadj *suivant;
-};
+}ELTADJ;
 
-struct sommet {
+typedef struct sommet {
 	int label;
 	int info;
 	struct sommet *suivant;
-	struct eltadj *adj;
-};
+	ELTADJ *adj;
+}SOMMET;
 
 
-struct graphe {
+typedef struct graphe {
 	int nbS;
 	int nbA;
 	int maxS;
-	struct sommet *premierSommet;
-	struct sommet *dernierSommet;
-};
-
-typedef struct graphe GRAPHE;
-typedef struct sommet SOMMET;
-typedef struct eltadj ELTADJ;
+	SOMMET *premierSommet;
+	SOMMET *dernierSommet;
+}GRAPHE;
 
 /**
  * \fn void initialiserGraphe(GRAPHE *)
@@ -55,7 +51,7 @@ void initialiserGraphe(GRAPHE *g);
  *
  * \return
  *      -1 si l'allocation du sommet à échoué
- *			 0 si tout va bien
+ *			 psommet->label si tout va bien
  */
 int ajouterSommet(GRAPHE *g, int info);
 

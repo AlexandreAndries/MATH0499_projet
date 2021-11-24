@@ -16,7 +16,7 @@ int ajouterSommet(GRAPHE *g, int info)
 	SOMMET *pointeur;
 	g->maxS++;
 	pointeur=(SOMMET *) malloc(sizeof(SOMMET));
-	if (pointeur == NULL)
+	if (!pointeur)
 		{
 			printf("Erreur! Memoire insuffisante pour creer un sommet\n");
 			return -1;
@@ -29,7 +29,9 @@ int ajouterSommet(GRAPHE *g, int info)
 			pointeur->adj=NULL;
 			if (g->nbS == 0)
 				{
+					printf("Test de label 1: %d\n", pointeur->label);
 					g->premierSommet=pointeur;
+					printf("Test de label 3: %d\n", g->premierSommet->label);
 					g->dernierSommet=pointeur;
 				}
 			else

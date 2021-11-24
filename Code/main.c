@@ -4,12 +4,19 @@
  * \author: Rotheudt Thomas S191895 Alexandre Andries S196948
  * @projet: MATH0499
  */
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include "graphes.h"
 
- #include "graphe.c"
+
+ int main(){
+   GRAPHE *g = malloc(sizeof(GRAPHE *));
+   initialiserGraphe(g);
+
+   ajouterSommet(g, 1);
 
 
- int main(int argc, char const *argv[]) {
-
+   //afficherGraphe(g);
 
    return 0;
  }
