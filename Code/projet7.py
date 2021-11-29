@@ -1,18 +1,14 @@
 ## @package projet7
 #
-#   Cette librairie gère la boucle principale du projet
+#   Cette librairie gère la boucle principale du projet et contient l'algorithme du projet
 
 import networkx as nx
 import matplotlib.pyplot as plt
 import graphe as gr
+import time as tm
 
-NBR_SOMMETS = 30
-
-color = []
-i = 0
+NBR_SOMMETS = 20
+temps = tm.time()
 
 G = gr.init_graphe_aleatoire(NBR_SOMMETS)
-
-
-nx.draw(G, font_weight='bold')
-plt.show()  
+gr.afficher_graphe(G)
