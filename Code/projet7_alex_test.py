@@ -16,8 +16,9 @@ import random as rand
 # ---------------------------------------------------------------------------- #
 NBR_SOMMETS = 30
 NBR_ARCS = 70
+FRAMES = 50
 
-random.seed()
+rand.seed()
 # ---------------------------------------------------------------------------- #
 # ------------------------------ FUNCTIONS ----------------------------------- #
 # ---------------------------------------------------------------------------- #
@@ -94,12 +95,36 @@ Paramètres:
 Retourne:
     Ne retourne rien, permet l'évolution des contaminations
 """
-def propagation(num, nSommets, layout, ax):
+def propagation(num, nSommets, layout, G, ax):
     ax.clear()
+
+    color = []
+
+    for i in range(len(G)):
+        if G.nodes[i]['weight'] == 'S':
+            color.append('grey')
+
+        elif G.nodes[i]['weight'] == 'G':
+            color.append('green')
+
+        else:
+            color.append('red')
+
+    nx.draw(G, pos=layout, node_color=color, ax=ax, font_weight='bold')
+    ax.set_title("Frame {}".format(num))
+
+    # for j in range(len(G)) :
+    #     if G.nodes[j]['weight'] == 'C':
+    #         liste_voisins = list(G.neighbors(j))
+    #         for i in liste_voisins:
+    #             G.nodes[(j, i)]['weigth'] = 'C'
+    #         break
+
+
 
     #règle de changement d'etat du graphe (contamination, guérison ...)
     #modification de weight dans chaque node en fonction de l'adjacence
-    
+
 
 # ---------------------------------------------------------------------------- #
 """
@@ -112,22 +137,22 @@ Paramètres:
 Retourne:
     Rien, mais affiche l'animation du graphe
 """
-def animation() :
-    global NBR_SOMMETS, NBR_ARCS
+def animate() :
+    global NBR_SOMMETS, NBR_ARCS, FRAMES
 
     fig, ax = plt.subplots(figsize=(6,4))
     G, layout = init_graphe(NBR_SOMMETS, NBR_ARCS)
 
     ani = animation.FuncAnimation(fig,
                                   propagation,
-                                  frames=100,
+                                  frames=FRAMES,
                                   fargs=(NBR_SOMMETS, layout, G, ax))
 
-    ani.save('Virus.gif', writer='Thomas&Alex')
+    ani.save('animation_1.gif', writer='imagemagick')
 
     plt.show()
 
 # ---------------------------------------------------------------------------- #
 # ------------------------------ MAIN LOOP ----------------------------------- #
 # ---------------------------------------------------------------------------- #
-animation()
+animate()
