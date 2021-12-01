@@ -1,6 +1,6 @@
 ## @package projet7
 #
-#  Main Projet 7 - MATH0499 Théorie des Graphes
+#  Main Projet 7 - MATH0499 Theorie des Graphes
 
 import networkx as nx
 import numpy as np
@@ -39,16 +39,19 @@ Retourne:
     - G, le graphe
     - layout, la disposition du graphe
 """
-def init_graphe(nSommets, nArcs) :
+
+
+def init_graphe(nSommets, nArcs):
     G = nx.gnm_random_graph(nSommets, nArcs)
     layout = nx.spring_layout(G)
 
-    for i in range(nSommets) :
+    for i in range(nSommets):
         G.nodes[i]['weight'] = 'S'
 
     patient_zero(G, nSommets)
 
     return G, layout
+
 
 # ---------------------------------------------------------------------------- #
 """
@@ -62,20 +65,16 @@ Paramètres:
 Retourne:
     Ne retourne rien
 """
-def patient_zero(G, nSommets) :
+
+
+def patient_zero(G, nSommets):
     index = rand.randint(0, nSommets-1)
     G.nodes[index]['weight'] = 'C'
 
 # ---------------------------------------------------------------------------- #
 
 
-
-
-
 # INSERT NEW FUNCTIONS USED FOR PROPAGATION() HERE
-
-
-
 
 
 # ---------------------------------------------------------------------------- #
@@ -95,6 +94,8 @@ Paramètres:
 Retourne:
     Ne retourne rien, permet l'évolution des contaminations
 """
+
+
 def propagation(num, nSommets, layout, G, ax):
     ax.clear()
 
@@ -113,19 +114,15 @@ def propagation(num, nSommets, layout, G, ax):
     nx.draw(G, pos=layout, node_color=color, ax=ax, font_weight='bold')
     ax.set_title("Frame {}".format(num))
 
-    # for j in range(len(G)) :
+    # for j in range(len(G)):
     #     if G.nodes[j]['weight'] == 'C':
-    #         liste_voisins = list(G.neighbors(j))
+    #         liste_voisins = list(G.adj[j])
+    #         print(liste_voisins)
     #         for i in liste_voisins:
-    #             G.nodes[(j, i)]['weigth'] = 'C'
-    #         break
-
-
+    #             G.nodes[i]['weigth'] = 'C'
 
     #règle de changement d'etat du graphe (contamination, guérison ...)
     #modification de weight dans chaque node en fonction de l'adjacence
-
-
 # ---------------------------------------------------------------------------- #
 """
 Résumé:
@@ -137,10 +134,12 @@ Paramètres:
 Retourne:
     Rien, mais affiche l'animation du graphe
 """
-def animate() :
+
+
+def animate():
     global NBR_SOMMETS, NBR_ARCS, FRAMES
 
-    fig, ax = plt.subplots(figsize=(6,4))
+    fig, ax = plt.subplots(figsize=(6, 4))
     G, layout = init_graphe(NBR_SOMMETS, NBR_ARCS)
 
     ani = animation.FuncAnimation(fig,
@@ -151,6 +150,7 @@ def animate() :
     ani.save('animation_1.gif', writer='imagemagick')
 
     plt.show()
+
 
 # ---------------------------------------------------------------------------- #
 # ------------------------------ MAIN LOOP ----------------------------------- #
