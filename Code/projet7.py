@@ -54,8 +54,6 @@ def init_graphe(nSommets, nArcs):
     patient_zero(G, nSommets)
 
     return G, layout
-
-
 # ---------------------------------------------------------------------------- #
 def patient_zero(G, nSommets):
     """
@@ -72,27 +70,19 @@ def patient_zero(G, nSommets):
 
     index = rand.randint(0, nSommets-1)
     G.nodes[index]['weight'] = 'C'
-
-# ---------------------------------------------------------------------------- #
-
-
-# INSERT NEW FUNCTIONS USED FOR PROPAGATION() HERE
-
-def contaminer_voisins(G):
-    liste_contacts = []
-
-    for i in range(len(G)):
-        if G.nodes[i]['weight'] == 'C':
-            liste_contacts.extend(list(G.adj[i]))
-
-    for contact in liste_contacts:
-        # il faut ajouter ici une condition sur un nombre alétoire afin de
-        # freiner la propagation du virus !
-        G.nodes[contact]['weight'] = 'C'
-
-
 # ---------------------------------------------------------------------------- #
 def coloriage(G):
+    ''' 
+    Résumé:
+        Récupère les couleurs des noeuds du graphe
+
+    Paramètres:
+        - G, le graphe
+
+    Retourne:
+        -color, une liste des couleurs des noeuds (dans l'ordre des indices des noeuds) 
+    
+    '''
     color = []
 
     for i in range(len(G)):
@@ -106,9 +96,35 @@ def coloriage(G):
             color.append('red')
 
     return color
-
-
 # ---------------------------------------------------------------------------- #
+def etape_contamination(G):
+    ''' 
+    Résumé:
+        Récupère les différentes étapes de contamination du graphe G 
+
+    Paramètres:
+        - G, le graphe
+
+    Retourne:
+        Ne retourne rien
+    '''
+    global etatG
+
+    etatG.append(coloriage(G))
+    for i in range(1, FRAMES):
+        liste_contacts = []
+
+        for j in range(len(G)):
+            if G.nodes[j]['weight'] == 'C':
+                liste_contacts.extend(list(G.adj[j]))
+
+
+        for contact in liste_contacts:
+            G.nodes[contact]['weight'] = 'C'
+
+
+        etatG.append(coloriage(G))
+# ----------------------------------------------------------------------------
 def update_anim(num, layout, G, ax):
     """
     Résumé:
@@ -136,29 +152,6 @@ def update_anim(num, layout, G, ax):
     # règle de changement d'etat du graphe (contamination, guérison ...)
     # modification de weight dans chaque node en fonction de l'adjacence
 # ----------------------------------------------------------------------------
-
-
-def etape_contamination(G):
-    global etatG
-
-    etatG.append(coloriage(G))
-    for i in range(1, FRAMES):
-        liste_contacts = []
-
-        for j in range(len(G)):
-            if G.nodes[j]['weight'] == 'C':
-                liste_contacts.extend(list(G.adj[j]))
-
-
-        for contact in liste_contacts:
-            G.nodes[contact]['weight'] = 'C'
-
-
-        etatG.append(coloriage(G))
-
-# ----------------------------------------------------------------------------
-
-
 def animate():
     """
     Résumé:
