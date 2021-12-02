@@ -22,26 +22,25 @@ rand.seed()
 # ---------------------------------------------------------------------------- #
 # ------------------------------ FUNCTIONS ----------------------------------- #
 # ---------------------------------------------------------------------------- #
-"""
-Résumé:
-    Initialise un graphe aléatoire sur base d'un nombre de sommets et d'arcs
-    donnés. Les sommets du graphes correspondent aux "personnes" appartenant à
-    une "population" (i.e. l'ensemble du graphe) et les arcs représentent les
-    liens entre ces personnes (i.e. si elles se fréquentent).
-    Les sommets sont tous initialisés comme étant sain (S), à l'exception d'un
-    sommet initialisé comme contaminé (C), c'est le patient zéro.
-
-Paramètres:
-    - nSommets: le nombre de sommets du graphes
-    - nArcs: le nombre d'arcs du graphes
-
-Retourne:
-    - G, le graphe
-    - layout, la disposition du graphe
-"""
-
-
 def init_graphe(nSommets, nArcs):
+    """
+    Résumé:
+        Initialise un graphe aléatoire sur base d'un nombre de sommets et d'arcs
+        donnés. Les sommets du graphes correspondent aux "personnes" appartenant à
+        une "population" (i.e. l'ensemble du graphe) et les arcs représentent les
+        liens entre ces personnes (i.e. si elles se fréquentent).
+        Les sommets sont tous initialisés comme étant sain (S), à l'exception d'un
+        sommet initialisé comme contaminé (C), c'est le patient zéro.
+
+    Paramètres:
+        - nSommets: le nombre de sommets du graphes
+        - nArcs: le nombre d'arcs du graphes
+
+    Retourne:
+        - G, le graphe
+        - layout, la disposition du graphe
+    """
+
     G = nx.gnm_random_graph(nSommets, nArcs)
     layout = nx.spring_layout(G)
 
@@ -54,20 +53,19 @@ def init_graphe(nSommets, nArcs):
 
 
 # ---------------------------------------------------------------------------- #
-"""
-Résumé:
-    Initialise aléatoirement un élément du graphe comme étant contaminé.
-
-Paramètres:
-    - G, le graphe
-    - nSommets: le nombre de sommets du graphes
-
-Retourne:
-    Ne retourne rien
-"""
-
-
 def patient_zero(G, nSommets):
+    """
+    Résumé:
+        Initialise aléatoirement un élément du graphe comme étant contaminé.
+
+    Paramètres:
+        - G, le graphe
+        - nSommets: le nombre de sommets du graphes
+
+    Retourne:
+        Ne retourne rien
+    """
+
     index = rand.randint(0, nSommets-1)
     G.nodes[index]['weight'] = 'C'
 
@@ -76,27 +74,35 @@ def patient_zero(G, nSommets):
 
 # INSERT NEW FUNCTIONS USED FOR PROPAGATION() HERE
 
+def contaminer_voisins(G) :
+    liste_contacts = []
+
+    for i in range(len(G)):
+        if G.nodes[i]['weight'] == 'C' :
+            liste_contacts.extend(list(G.adj[i]))
+
+    for contacts in liste_contacts :
+        G.nodes[i]['weight'] = 'C'
+
 
 # ---------------------------------------------------------------------------- #
-"""
-Résumé:
-    Fonction de mise à jour de l'animation. Cette fonction gère la propagation
-    du virus depuis le patient zéro jusqu'à la contamination de la population
-    entière du graphe. Le virus se propage d'une personne à l'autre si celles-ci
-    sont en contact.
-
-Paramètres:
-    - num, nombre d'image de l'animation
-    - nSommets: le nombre de sommets du graphes
-    - layout, la disposition du graphe
-    - ax, ????? what the fuck is ax
-
-Retourne:
-    Ne retourne rien, permet l'évolution des contaminations
-"""
-
-
 def propagation(num, nSommets, layout, G, ax):
+    """
+    Résumé:
+        Fonction de mise à jour de l'animation. Cette fonction gère la propagation
+        du virus depuis le patient zéro jusqu'à la contamination de la population
+        entière du graphe. Le virus se propage d'une personne à l'autre si celles-ci
+        sont en contact.
+
+    Paramètres:
+        - num, nombre d'image de l'animation
+        - nSommets: le nombre de sommets du graphes
+        - layout, la disposition du graphe
+        - ax, ????? what the fuck is ax
+
+    Retourne:
+        Ne retourne rien, permet l'évolution des contaminations
+    """
     ax.clear()
 
     color = []
@@ -114,6 +120,8 @@ def propagation(num, nSommets, layout, G, ax):
     nx.draw(G, pos=layout, node_color=color, ax=ax, font_weight='bold')
     ax.set_title("Frame {}".format(num))
 
+    contaminer_voisins(G)
+
     # for j in range(len(G)):
     #     if G.nodes[j]['weight'] == 'C':
     #         liste_voisins = list(G.adj[j])
@@ -124,19 +132,17 @@ def propagation(num, nSommets, layout, G, ax):
     #règle de changement d'etat du graphe (contamination, guérison ...)
     #modification de weight dans chaque node en fonction de l'adjacence
 # ---------------------------------------------------------------------------- #
-"""
-Résumé:
-    Fonction d'animation de la propagation du virus.
-
-Paramètres:
-    Pas de paramètre
-
-Retourne:
-    Rien, mais affiche l'animation du graphe
-"""
-
-
 def animate():
+    """
+    Résumé:
+        Fonction d'animation de la propagation du virus.
+
+    Paramètres:
+        Pas de paramètre
+
+    Retourne:
+        Rien, mais affiche l'animation du graphe
+    """
     global NBR_SOMMETS, NBR_ARCS, FRAMES
 
     fig, ax = plt.subplots(figsize=(6, 4))
