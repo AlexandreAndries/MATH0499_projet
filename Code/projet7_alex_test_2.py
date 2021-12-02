@@ -14,9 +14,11 @@ import random as rand
 # ---------------------------------------------------------------------------- #
 # -------------------------------- INIT -------------------------------------- #
 # ---------------------------------------------------------------------------- #
-NBR_SOMMETS = 30
-NBR_ARCS = 70
-FRAMES = 50
+NBR_SOMMETS = 300
+NBR_ARCS = 500
+FRAMES = 30
+
+etatG = []
 
 rand.seed()
 # ---------------------------------------------------------------------------- #
@@ -124,24 +126,42 @@ def propagation(num, nSommets, layout, G, ax):
     Retourne:
         Ne retourne rien, permet l'évolution des contaminations
     """
+    global etatG
+
     ax.clear()
 
     # color.append(coloriage(G))
 
-    random_colors = np.random.randint(2, size=NBR_SOMMETS)
+    # random_colors = np.random.randint(2, size=NBR_SOMMETS)
 
     # color[num] devient node_color
 
-    nx.draw(G, pos=layout, node_color=coloriage(G), ax=ax, font_weight='bold')
+    nx.draw(G, pos=layout, node_color=etatG[num], ax=ax, font_weight='bold')
     ax.set_title("Frame {}".format(num))
 
-    print(num)
+    # contaminer_voisins(G)
 
-    contaminer_voisins(G)
+    # règle de changement d'etat du graphe (contamination, guérison ...)
+    # modification de weight dans chaque node en fonction de l'adjacence
+# ----------------------------------------------------------------------------
 
-    #règle de changement d'etat du graphe (contamination, guérison ...)
-    #modification de weight dans chaque node en fonction de l'adjacence
-# ---------------------------------------------------------------------------- #
+
+def etape_contamination(G):
+    global etatG
+
+    etatG.append(coloriage(G))
+    for i in range(1, FRAMES):
+        liste_contacts = []
+
+        for j in range(len(G)):
+            if G.nodes[j]['weight'] == 'C':
+                liste_contacts.extend(list(G.adj[j]))
+        for contact in liste_contacts:
+            G.nodes[contact]['weight'] = 'C'
+
+        etatG.append(coloriage(G))
+
+# ----------------------------------------------------------------------------
 
 
 def animate():
@@ -155,10 +175,11 @@ def animate():
     Retourne:
         Rien, mais affiche l'animation du graphe
     """
-    global NBR_SOMMETS, NBR_ARCS, FRAMES
+    global NBR_SOMMETS, NBR_ARCS, FRAMES, etatG
 
     fig, ax = plt.subplots(figsize=(6, 4))
     G, layout = init_graphe(NBR_SOMMETS, NBR_ARCS)
+    etape_contamination(G)
 
     ani = animation.FuncAnimation(fig,
                                   propagation,
