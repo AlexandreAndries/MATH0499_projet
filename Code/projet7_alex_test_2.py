@@ -130,8 +130,12 @@ def propagation(num, nSommets, layout, G, ax):
 
     random_colors = np.random.randint(2, size=NBR_SOMMETS)
 
+    # color[num] devient node_color
+
     nx.draw(G, pos=layout, node_color=coloriage(G), ax=ax, font_weight='bold')
     ax.set_title("Frame {}".format(num))
+
+    print(num)
 
     contaminer_voisins(G)
 
