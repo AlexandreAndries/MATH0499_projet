@@ -81,8 +81,11 @@ def contaminer_voisins(G) :
         if G.nodes[i]['weight'] == 'C' :
             liste_contacts.extend(list(G.adj[i]))
 
-    for contacts in liste_contacts :
-        G.nodes[i]['weight'] = 'C'
+
+    for contact in liste_contacts :
+        # il faut ajouter ici une condition sur un nombre alétoire afin de
+        # freiner la propagation du virus !
+        G.nodes[contact]['weight'] = 'C'
 
 
 # ---------------------------------------------------------------------------- #
@@ -114,20 +117,18 @@ def propagation(num, nSommets, layout, G, ax):
         elif G.nodes[i]['weight'] == 'G':
             color.append('green')
 
-        else:
+        elif G.nodes[i]['weight'] == 'C':
             color.append('red')
+
+    print(color)
+
 
     nx.draw(G, pos=layout, node_color=color, ax=ax, font_weight='bold')
     ax.set_title("Frame {}".format(num))
 
     contaminer_voisins(G)
 
-    # for j in range(len(G)):
-    #     if G.nodes[j]['weight'] == 'C':
-    #         liste_voisins = list(G.adj[j])
-    #         print(liste_voisins)
-    #         for i in liste_voisins:
-    #             G.nodes[i]['weigth'] = 'C'
+
 
     #règle de changement d'etat du graphe (contamination, guérison ...)
     #modification de weight dans chaque node en fonction de l'adjacence
@@ -151,7 +152,9 @@ def animate():
     ani = animation.FuncAnimation(fig,
                                   propagation,
                                   frames=FRAMES,
-                                  fargs=(NBR_SOMMETS, layout, G, ax))
+                                  fargs=(NBR_SOMMETS, layout, G, ax),
+                                  interval=500,
+                                  blit=False)
 
     ani.save('animation_1.gif', writer='imagemagick')
 
