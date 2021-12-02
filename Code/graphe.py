@@ -1,89 +1,49 @@
-"""
-Résumé:
-    module gérant les fonctions liées aux modifications de graphe du projet
+from constante import *
 
-Auteurs:
-    Alexandre Andries
-    Thomas Rotheudt
-"""
-
-
-import networkx as nx
-import matplotlib.pyplot as plt
-import random as rand
-
-
-def init_graphe_aleatoire(nbrSommets):
-    """
-        Résumé:
-            Crée un graphe connexe aléatoire avec "nbrSommets" noeuds et un nombre d'arêtes aléatoires
-
-        Paramètres:
-            -nbrSommets le nombre de sommets du graphe
-
-        Retourne:
-            -G un graphe aléatoire
-    """
-    G = nx.Graph()
-
-    for j in range(nbrSommets): #Boucle initialisant les différents noeuds du graphe Gs
-        G.add_node(j, weight = 'S')
-
-    for i in range(nbrSommets): #Boucle parcourant les différents noeuds du graphe G
-
-        while len(G.adj[i]) <= 2: #Pour chaque noeuds on crée des liaisons aléatoires entre des noeuds aléatoires tant que le degré de chaque noeuds n'est pas au minimum égale à 2
-            nbrAleatoire = (rand.randint(0, nbrSommets-1), rand.randint(0, nbrSommets-1))
-
-            if nbrAleatoire[0] != nbrAleatoire[1]:
-                G.add_edge(nbrAleatoire[0], nbrAleatoire[1])
-
-    return G
-
-def afficher_graphe(Graphe):
+# ---------------------------------------------------------------------------- #
+def init_graphe(nSommets, nArcs):
     """
     Résumé:
-        Affiche le graphe "Graphe" dans une fenêtre à part.
+        Initialise un graphe aléatoire sur base d'un nombre de sommets et d'arcs
+        donnés. Les sommets du graphes correspondent aux "personnes" appartenant à
+        une "population" (i.e. l'ensemble du graphe) et les arcs représentent les
+        liens entre ces personnes (i.e. si elles se fréquentent).
+        Les sommets sont tous initialisés comme étant sain (S), à l'exception d'un
+        sommet initialisé comme contaminé (C), c'est le patient zéro.
 
     Paramètres:
-        -Graphe: le graphe à afficher
+        - nSommets: le nombre de sommets du graphes
+        - nArcs: le nombre d'arcs du graphes
 
     Retourne:
-        Ne retourne rien mais affiche une fenêtre avec le graphe "Graphe"
+        - G, le graphe
+        - layout, la disposition du graphe
     """
-    color = []
 
-    for i in range(len(Graphe)):
-        if Graphe.nodes[i]['weight'] == 'S':
-            color.append('grey')
+    G = nx.gnm_random_graph(nSommets, nArcs)
+    layout = nx.spring_layout(G)
 
-        elif Graphe.nodes[i]['weight'] == 'G':
-            color.append('green')
+    for i in range(nSommets):
+        G.nodes[i]['weight'] = 'S'
 
-        else:
-            color.append('red')
+    patient_zero(G, nSommets)
 
-    nx.draw(Graphe, node_color = color ,font_weight='bold')
-    plt.show()
-
-
-def verifier_population(Graphe) :
+    return G, layout
+# ---------------------------------------------------------------------------- #
+def patient_zero(G, nSommets):
     """
     Résumé:
-        Vérifie l'état de contamination de la population.
+        Initialise aléatoirement un élément du graphe comme étant contaminé.
 
     Paramètres:
-        -Graphe: le graphe à afficher
+        - G, le graphe
+        - nSommets: le nombre de sommets du graphes
 
     Retourne:
-        True si l'entiereté de la population a été contaminée.
-        False sinon.
+        Ne retourne rien
     """
-    compteur = 0
-    for i in range(len(Graphe)):
-        if Graphe.nodes[i]['weight'] == 'C':
-            compteur += 1
 
-    if compteur == len(Graphe) :
-        return True
-    else :
-        return False
+    index = rand.randint(0, nSommets-1)
+    G.nodes[index]['weight'] = 'C'
+    ancienConta.append((index, 0))
+# ---------------------------------------------------------------------------- #
