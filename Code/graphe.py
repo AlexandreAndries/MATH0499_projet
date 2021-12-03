@@ -1,7 +1,7 @@
 from constante import *
 
 # ---------------------------------------------------------------------------- #
-def init_graphe(nSommets, nArcs):
+def init_graphe(nSommets, nCommunautes, connexite, interconnexite):
     """
     Résumé:
         Initialise un graphe aléatoire sur base d'un nombre de sommets et d'arcs
@@ -20,13 +20,16 @@ def init_graphe(nSommets, nArcs):
         - layout, la disposition du graphe
     """
 
-    G = nx.gnm_random_graph(nSommets, nArcs)
+    G = nx.random_partition_graph( [nSommets for x in range(nCommunautes)],
+                                    connexite,
+                                    interconnexite)
+
     layout = nx.spring_layout(G)
 
-    for i in range(nSommets):
+    for i in range(nSommets*nCommunautes):
         G.nodes[i]['weight'] = 'S'
 
-    patient_zero(G, nSommets)
+    patient_zero(G, nSommets*nCommunautes)
 
     return G, layout
 # ---------------------------------------------------------------------------- #

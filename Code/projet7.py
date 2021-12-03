@@ -4,7 +4,7 @@
 import graphe as gr
 import contamination as cont
 from constante import *
- 
+
 # ---------------------------------------------------------------------------- #
 # ------------------------------ FUNCTIONS ----------------------------------- #
 # ---------------------------------------------------------------------------- #
@@ -31,11 +31,15 @@ def update_anim(num, layout, G, ax):
     ax.clear()
 
 
-    nx.draw(G, pos=layout, node_color=etatG[num], ax=ax, font_weight='bold')
+    nx.draw(G,
+            pos=layout,
+            node_color=etatG[num],
+            ax=ax,
+            font_weight='bold',
+            node_size=50)
+
     ax.set_title("Frame {}".format(num))
 
-    # règle de changement d'etat du graphe (contamination, guérison ...)
-    # modification de weight dans chaque node en fonction de l'adjacence
 # ----------------------------------------------------------------------------
 def animate():
     """
@@ -48,23 +52,25 @@ def animate():
     Retourne:
         Rien, mais affiche l'animation du graphe
     """
-    global NBR_SOMMETS, NBR_ARCS, FRAMES, etatG
+    global NBR_SOMMETS, NBR_COMMUNAUTES, CONNEXITE, INTERCONNEXITE, FRAMES, etatG
 
     fig, ax = plt.subplots(figsize = (14, 8))
-    G, layout = gr.init_graphe(NBR_SOMMETS, NBR_ARCS)
+    G, layout = gr.init_graphe( NBR_SOMMETS,
+                                NBR_COMMUNAUTES,
+                                CONNEXITE,
+                                INTERCONNEXITE)
     cont.etape_contamination(G)
 
     ani = animation.FuncAnimation(fig,
                                   update_anim,
                                   frames=FRAMES,
                                   fargs=(layout, G, ax),
-                                  interval = 500,
+                                  interval = 800,
                                   blit=False)
 
     ani.save('animation_1.gif', writer='imagemagick')
 
     plt.show()
-
 
 # ---------------------------------------------------------------------------- #
 # ------------------------------ MAIN LOOP ----------------------------------- #
