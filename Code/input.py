@@ -10,7 +10,7 @@ def user_input() :
 
     default = input("Lancer avec paramètres par défaut ? (Y/N)")
 
-    if default == Y :
+    if default == 'Y' :
         NBR_SOMMETS = 120
         NBR_COMMUNAUTES = 7
         CONNEXITE = 0.07
