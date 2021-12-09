@@ -16,9 +16,9 @@ if default == 'Y' :
     NBR_SOMMETS = 120
     NBR_COMMUNAUTES = 7
     CONNEXITE = 0.07
-    INTERCONNEXITE = 0.00004
+    INTERCONNEXITE = 0.00008
     MORTAL = False
-    FRAMES = 12 + NBR_COMMUNAUTES//2
+    FRAMES = 15 + NBR_COMMUNAUTES//2
 else :
     NBR_SOMMETS = int(input("Entrez nb de sommets par communauté (ex: 150) : "))
     NBR_COMMUNAUTES = int(input("Entrez nb de communautés (ex: 3) : "))
@@ -27,7 +27,6 @@ else :
     MORTAL = bool(input("Le virus est-il mortel (True/False) ? "))
     FRAMES = 20 + NBR_COMMUNAUTES//2
 
-FRAMES = 12 + NBR_COMMUNAUTES//2
 TOUR_GUERISON = 3
 
 etatG = []
