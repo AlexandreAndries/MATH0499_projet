@@ -9,7 +9,7 @@ import random as rand
 
 
 default = input("Lancer avec paramètres par défaut ? (Y/N)\n")
-while default != 'Y' or 'N':
+while (default != 'Y') and (default != 'N'):
     default = input("Lancer avec paramètres par défaut ? (Y/N)\n")
 
 if default == 'Y' :
