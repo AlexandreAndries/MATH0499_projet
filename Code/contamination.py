@@ -46,8 +46,6 @@ def nettoyage_anciens_conta(listeConta, tourInfection):
     ancienConta.extend(listeContaFormat)
     ancienConta = list(set(ancienConta))
 
-    # print(ancienConta)
-
 
     return listeConta
 # ---------------------------------------------------------------------------- #

@@ -50,3 +50,5 @@ def patient_zero(G, nSommets):
     G.nodes[index]['weight'] = 'C'
     ancienConta.append((index, 0))
 # ---------------------------------------------------------------------------- #
+
+
